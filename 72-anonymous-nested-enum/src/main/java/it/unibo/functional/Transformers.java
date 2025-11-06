@@ -4,6 +4,7 @@ import it.unibo.functional.api.Function;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -54,7 +55,13 @@ public final class Transformers {
      * @return A transformed list where each input element is replaced with the produced elements
      */
     public static <I, O> List<O> transform(final Iterable<I> base, final Function<I, O> transformer) {
-        return null;
+        List<O> list = new LinkedList<O>();
+        
+        for (I el : base) {
+            list.add(transformer.call(el));
+        }
+
+        return list;
     }
 
     /**
@@ -70,7 +77,15 @@ public final class Transformers {
      * @return A flattened list with the elements of each collection in the input
      */
     public static <I> List<? extends I> flatten(final Iterable<? extends Collection<? extends I>> base) {
-        return null;
+        List<I> list = new LinkedList<>();
+        
+        for (Collection<? extends I> collection : base) {
+            for (I el : collection) {
+                list.add(el);
+            }
+        }
+
+        return list;
     }
 
     /**
@@ -87,7 +102,13 @@ public final class Transformers {
      * @return A list containing only the elements that passed the test
      */
     public static <I> List<I> select(final Iterable<I> base, final Function<I, Boolean> test) {
-        return null;
+        List<I> list = new LinkedList<>();
+        
+        for (I el : Objects.requireNonNull(base, "The base iterable cannot be null")) {
+            if (test.call(el)) list.add(el);
+        }
+
+        return list;
     }
 
     /**
@@ -103,6 +124,13 @@ public final class Transformers {
      * @return A list containing only the elements that passed the test
      */
     public static <I> List<I> reject(final Iterable<I> base, final Function<I, Boolean> test) {
-        return null;
+        List<I> list = new LinkedList<>();
+        
+        for (I el : Objects.requireNonNull(base, "The base iterable cannot be null")) {
+            if (!test.call(el)) list.add(el);
+        }
+
+        return list;
+
     }
 }
